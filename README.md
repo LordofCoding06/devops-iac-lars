@@ -206,3 +206,7 @@ upload: site/404.html to s3://lars-stalder-devops-bucket/404.html
 ✅ S3 Website online  
 ✅ CI/CD über GitHub Actions funktioniert  
 🚀 Projekt abgeschlossen – vollautomatisches Deployment aktiv!
+
+setx AWS_ACCESS_KEY_ID "<NEUER_KEY>"
+setx AWS_SECRET_ACCESS_KEY "<NEUER_SECRET>"
+setx AWS_SESSION_TOKEN "<NEUER_TOKEN>"
