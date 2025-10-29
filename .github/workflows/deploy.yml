@@ -11,10 +11,16 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # AWS CLI sicherstellen
+      - name: Setup AWS CLI
+        uses: aws-actions/setup-aws-cli@v2
+
+      # Credentials + Region setzen (aus Secrets)
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -22,5 +28,19 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Deploy site folder to S3
+      # --- Diagnose: Wer bin ich? In welcher Region? Gibt es den Bucket? ---
+      - name: Who am I (STS)
+        run: aws sts get-caller-identity
+
+      - name: Show Region & Bucket
+        run: |
+          echo "Region: ${{ secrets.AWS_REGION }}"
+          echo "Bucket: ${{ secrets.S3_BUCKET }}"
+
+      - name: List bucket (sanity check)
+        continue-on-error: true
+        run: aws s3 ls s3://${{ secrets.S3_BUCKET }}
+
+      # --- Deploy ---
+      - name: Sync site/ to S3
         run: aws s3 sync ./site s3://${{ secrets.S3_BUCKET }} --delete
