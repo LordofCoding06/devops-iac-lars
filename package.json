@@ -1,0 +1,10 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "deploy:aws": "aws s3 sync ./site s3://lars-stalder-devops-bucket --delete --region us-east-1 --profile school",
+    "deploy:dry": "aws s3 sync ./site s3://lars-stalder-devops-bucket --delete --dryrun --region us-east-1 --profile school",
+    "list:bucket": "aws s3 ls s3://lars-stalder-devops-bucket --region us-east-1 --profile school"
+  }
+}
